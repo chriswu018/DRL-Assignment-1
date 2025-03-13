@@ -4,6 +4,18 @@ import pickle
 import random
 import gym
 
+with open("q_table.pkl", "rb") as f:
+    Q_table = pickle.load(f)
+
+def get_state(obs):
+    taxi_row,   taxi_col, \
+    Rrow, Rcol, Grow, Gcol, Yrow, Ycol, Brow, Bcol, \
+    obstacle_north, obstacle_south, obstacle_east, obstacle_west, \
+    passenger_look, destination_look = obs  
+    
+    return (obstacle_north, obstacle_south, obstacle_east, obstacle_west)
+
+
 def get_action(obs):
     
     # TODO: Train your own agent
@@ -12,8 +24,8 @@ def get_action(obs):
     #       To prevent crashes, implement a fallback strategy for missing keys. 
     #       Otherwise, even if your agent performs well in training, it may fail during testing.
     
+    state = get_state(obs)
 
-
-    return random.choice([0, 1, 2, 3, 4, 5]) # Choose a random action
+    return np.argmax(Q_table[state])
     # You can submit this random agent to evaluate the performance of a purely random strategy.
 
